@@ -1,15 +1,25 @@
 
 import javafx.application.Application;
 import javafx.event.*;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.animation.AnimationTimer;
+import java.util.*;
 
 public class Main extends Application {
 
@@ -20,6 +30,7 @@ public class Main extends Application {
         Player player = new Player(0, 0, 90);
         // getX(), getY(), getD(), move(), and turn()
         launch(args);
+
     }
 
     @Override
@@ -36,24 +47,40 @@ public class Main extends Application {
         AnchorPane anchor = new AnchorPane();
         VBox vbox = new VBox();
 		Buttons buttons = new Buttons();
+
+        Canvas c = new Canvas(640, 480);
+        root.getChildren.add(c);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.GREEN);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        Font testFont = Font.font("Times New Roman", FontWeight.BOLD, 48);
+        gc.setFont(testFont);
+        gc.fillText("Times New Roman", 60, 50);
+        gc.strokeText("Times New Roman", 60, 50);
+        Image earth = new Image( "earth.png" );
+        gc.drawImage( earth, 180, 100 );
+
+        // Image i1 = new Image("player.png");
+
 		root.getChildren().add(anchor);
 		anchor.getChildren().add(vbox);
         anchor.setLeftAnchor(vbox, 5.0);
         vbox.setSpacing(10.0);
         vbox.setPadding(new Insets(5, 5, 5, 5));
 
-        Button menuButtons[] = new Button[5];
+        Button menuButtons[] = new Button[20];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             menuButtons[i] = new Button();
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             menuButtons[i].setMinWidth(100.0);
         	menuButtons[i].setMaxWidth(100.0);
         }
 
-        for (int i = 0; i < 5; i ++) {
+        for (int i = 0; i < 4; i ++) {
             vbox.getChildren().add(menuButtons[i]);
         }
 
@@ -61,7 +88,8 @@ public class Main extends Application {
         menuButtons[1].setText("Load game");
         menuButtons[2].setText("Settings");
         menuButtons[3].setText("About");
-        menuButtons[4].setText("Quit");
+
+        ArrayList<String> input = new ArrayList<String>();
 
         menuButtons[0].setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -87,14 +115,30 @@ public class Main extends Application {
             	buttons.showAbout();
         	}
         });
-		menuButtons[4].setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-        	public void handle(ActionEvent e) {
-            	buttons.quit();
-        	}
+
+        Scene sc = new Scene(root, 640, 480, Color.BLACK);
+
+        sc.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    String stringCode = event.getCode().toString();
+                    case UP: if (!input.contains(stringCode)) {
+                        input.add(stringCode);
+                    }
+                }
         });
+        sc.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode().toString()) {
+                    case UP: 
+                }
+            }
+        });
+
         s.setTitle("Simulation Game");
-        s.setScene(new Scene(root, 640, 480, Color.BLACK));
+        s.setScene(sc);
         s.setResizable(false);
         s.show();
 

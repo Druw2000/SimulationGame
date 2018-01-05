@@ -1,4 +1,6 @@
 
+import javafx.stage.Stage;
+
 public class Buttons {
     public void newGame() {
         System.out.println("New game");
@@ -11,8 +13,5 @@ public class Buttons {
     }
     public void showAbout() {
         System.out.println("Show about");
-    }
-    public void quit() {
-        System.out.println("Quit");
     }
 }
